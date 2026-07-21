@@ -7,7 +7,11 @@ precedents. Read `docs/specifications/v1/00-overview.md` first; ADRs live in `do
 ## Layout
 
 - `packages/*` — foundation packages (TypeScript, npm workspaces): `tenancy`, `permissions`,
-  `audit`, `events`. Shared code moves only through packages (spec 10 §3).
+  `audit`, `events`, `auth`, `ai-gateway`, `agents`. Shared code moves only through packages
+  (spec 10 §3).
+- `db/migrations/` — forward-only SQL migrations; every tenant table has forced RLS. The
+  isolation gate is `scripts/db-isolation-test.mjs` (needs `DATABASE_URL`; CI runs it against
+  a Postgres service).
 - `docs/schemas/*.schema.json` — normative JSON Schemas (draft 2020-12). If prose and schema
   disagree, the schema wins.
 - `scripts/validate-schemas.mjs` — compiles all schemas and validates the examples embedded in

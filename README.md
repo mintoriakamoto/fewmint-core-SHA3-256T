@@ -30,6 +30,13 @@ built and tested against the spec's contracts.
 | `@cooklabs/permissions` | Deny-by-default RBAC + ABAC authorization engine (spec 02) |
 | `@cooklabs/audit` | Mandatory audit record shape and append-only log (spec 02 §5) |
 | `@cooklabs/events` | Event envelope validation against the normative schema, idempotent consumption (spec 05) |
+| `@cooklabs/auth` | Identity types, membership-verified tenant-context establishment, role→grant resolution (spec 02) |
+| `@cooklabs/ai-gateway` | Provider-independent Model Gateway: fallback chain, metering, tenant budgets, honest failure (spec 08) |
+| `@cooklabs/agents` | The agent execution pipeline: typed tools, Tool Gateway credential injection, schema→authz→policy→approval gates (specs 03–04) |
+
+Postgres core schema with forced row-level security lives in `db/migrations/`; the
+tenant-isolation gate (`scripts/db-isolation-test.mjs`) proves cross-tenant access is
+impossible and runs in CI against a real Postgres.
 
 Commands: `npm test` · `npm run lint` · `npm run typecheck` · `npm run build` ·
 `node scripts/validate-schemas.mjs` (schema gate). CI runs the spec 11 §1 gate sequence in
