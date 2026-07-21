@@ -7,6 +7,8 @@
     { "path": "packages/events" },
     { "path": "packages/auth" },
     { "path": "packages/ai-gateway" },
-    { "path": "packages/agents" }
+    { "path": "packages/agents" },
+    { "path": "packages/workflows" },
+    { "path": "packages/knowledge" }
   ]
 }

@@ -33,6 +33,8 @@ built and tested against the spec's contracts.
 | `@cooklabs/auth` | Identity types, membership-verified tenant-context establishment, role→grant resolution (spec 02) |
 | `@cooklabs/ai-gateway` | Provider-independent Model Gateway: fallback chain, metering, tenant budgets, honest failure (spec 08) |
 | `@cooklabs/agents` | The agent execution pipeline: typed tools, Tool Gateway credential injection, schema→authz→policy→approval gates (specs 03–04) |
+| `@cooklabs/workflows` | Executable engine for the workflow DSL: versioned runs, branch/retry/approval/delay, agent steps via the pipeline (spec 06) |
+| `@cooklabs/knowledge` | Tenant-scoped, permission-aware retrieval with classifications and citations; retrieved content tagged as untrusted data (specs 01 §6, 12) |
 
 Postgres core schema with forced row-level security lives in `db/migrations/`; the
 tenant-isolation gate (`scripts/db-isolation-test.mjs`) proves cross-tenant access is
