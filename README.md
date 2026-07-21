@@ -19,10 +19,21 @@ deploy a tenant → charge subscription + usage → measure outcomes → improve
 
 ## This repository (current state)
 
-This repository currently contains the **Cook Labs Architecture & Protocol Specification v1** —
-the constitution every human and AI developer must follow. Per the development order defined in
-the spec, this document set (Phase 0) is frozen **before** production coding begins. Platform
-code (Phase 1+) will be built against these contracts.
+This repository contains the **Cook Labs Architecture & Protocol Specification v1** — the
+constitution every human and AI developer must follow — plus the beginning of **Phase 1
+(Foundation)**: a TypeScript monorepo (npm workspaces) with the first foundation packages,
+built and tested against the spec's contracts.
+
+| Package | Implements |
+|---|---|
+| `@cooklabs/tenancy` | Fail-closed tenant context, ownership-column stamping, tenant-scoped repository base (spec 01) |
+| `@cooklabs/permissions` | Deny-by-default RBAC + ABAC authorization engine (spec 02) |
+| `@cooklabs/audit` | Mandatory audit record shape and append-only log (spec 02 §5) |
+| `@cooklabs/events` | Event envelope validation against the normative schema, idempotent consumption (spec 05) |
+
+Commands: `npm test` · `npm run lint` · `npm run typecheck` · `npm run build` ·
+`node scripts/validate-schemas.mjs` (schema gate). CI runs the spec 11 §1 gate sequence in
+[.github/workflows/ci.yml](.github/workflows/ci.yml).
 
 ## Reading the specification
 

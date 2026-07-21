@@ -1,0 +1,32 @@
+# CI gate sequence per docs/specifications/v1/11-deployment-gates.md §1.
+# Failure stops progression; later gates (security scan, isolation tests,
+# agent evaluations, e2e) are added as the phases that introduce them land.
+name: CI
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Formatting
+        run: npm run format:check
+      - name: Lint
+        run: npm run lint
+      - name: Type check
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Schema validation
+        run: node scripts/validate-schemas.mjs
