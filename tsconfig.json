@@ -1,0 +1,12 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/tenancy" },
+    { "path": "packages/permissions" },
+    { "path": "packages/audit" },
+    { "path": "packages/events" },
+    { "path": "packages/auth" },
+    { "path": "packages/ai-gateway" },
+    { "path": "packages/agents" }
+  ]
+}

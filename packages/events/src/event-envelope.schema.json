@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cooklabs.dev/schemas/v1/event-envelope.schema.json",
+  "title": "Cook Labs Event Envelope",
+  "description": "Standard envelope for all platform events. See spec 05-event-schema.md.",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "tenant_id",
+    "entity_id",
+    "occurred_at",
+    "schema_version",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Globally unique id, assigned once at publish; consumers deduplicate on it."
+    },
+    "event_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$",
+      "description": "Lowercase dot-namespaced type, e.g. 'invoice.overdue'."
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Owning tenant. Events never cross tenants."
+    },
+    "entity_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Primary entity the event concerns."
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC time the business fact happened (not publish time)."
+    },
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Payload shape version for this event_type."
+    },
+    "correlation_id": {
+      "type": "string",
+      "description": "Ties together a causal chain (request, workflow run, agent runs)."
+    },
+    "ordering_key": {
+      "type": "string",
+      "description": "Optional per-entity ordering key where a consumer requires ordering."
+    },
+    "payload": {
+      "type": "object",
+      "description": "Event-type-specific data, versioned by schema_version."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cooklabs.dev/schemas/v1/agent-definition.schema.json",
+  "title": "Cook Labs Agent Definition",
+  "description": "Declarative agent manifest compiled into enforceable permissions. See spec 03-agent-protocol.md.",
+  "type": "object",
+  "required": ["name", "version", "role", "goal", "max_autonomy_level", "tools", "permissions", "budget"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Unique snake_case agent identifier, e.g. 'warranty_followup_agent'."
+    },
+    "version": { "type": "integer", "minimum": 1 },
+    "display_name": { "type": "string" },
+    "role": { "type": "string", "description": "Template/role, e.g. 'customer_support'." },
+    "goal": { "type": "string", "minLength": 1 },
+    "instructions": { "type": "string" },
+    "model_policy": {
+      "type": "object",
+      "description": "Constraints passed to the Model Gateway (spec 08).",
+      "properties": {
+        "preferred": { "type": "string" },
+        "allowed_providers": { "type": "array", "items": { "type": "string" } },
+        "data_residency": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "max_autonomy_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "L0 observe … L5 approval-gated (spec 03 §4). Tenants may lower, never raise."
+    },
+    "tools": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_.]*$" },
+      "description": "Typed tool names the agent may propose (spec 04). No wildcard grants."
+    },
+    "permissions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["resource", "actions"],
+        "properties": {
+          "resource": { "type": "string" },
+          "actions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": ["read", "list", "create", "update", "delete", "export", "approve", "assign", "execute"]
+            }
+          },
+          "conditions": {
+            "type": "object",
+            "description": "ABAC attribute conditions narrowing the grant."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "knowledge_sources": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "budget": {
+      "type": "object",
+      "description": "Hard limits; exhaustion halts the agent visibly (spec 03 §5).",
+      "properties": {
+        "max_cost_usd_per_day": { "type": "number", "exclusiveMinimum": 0 },
+        "max_tokens_per_run": { "type": "integer", "exclusiveMinimum": 0 },
+        "max_actions_per_day": { "type": "integer", "exclusiveMinimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "approval_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["condition"],
+        "properties": {
+          "condition": { "type": "string", "description": "e.g. 'custom_offer_amount > 500'" },
+          "approver_role": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "triggers": {
+      "type": "array",
+      "items": { "type": "string", "description": "Event types (spec 05) or schedules that start the agent." }
+    }
+  },
+  "additionalProperties": false
+}

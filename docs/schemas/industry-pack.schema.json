@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cooklabs.dev/schemas/v1/industry-pack.schema.json",
+  "title": "Cook Labs Industry Pack Manifest",
+  "description": "Declarative definition of a vertical product. See spec 07-industry-pack-schema.md.",
+  "type": "object",
+  "required": ["industry", "version", "modules", "entities", "agents", "workflows", "dashboards", "integrations"],
+  "properties": {
+    "industry": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Unique snake_case identifier, e.g. 'auto_repair'."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semver of the pack."
+    },
+    "display_name": { "type": "string" },
+    "description": { "type": "string" },
+    "modules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/identifier" },
+      "description": "Core modules this pack installs (must exist in the platform module registry)."
+    },
+    "entities": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/identifier" },
+      "description": "Module-owned entities added by this pack (map to module tables per spec 01 §5)."
+    },
+    "agents": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/identifier" },
+      "description": "Agent definitions shipped by this pack (each an agent-definition manifest)."
+    },
+    "workflows": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/identifier" },
+      "description": "Versioned workflow definitions installed by this pack."
+    },
+    "dashboards": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/identifier" }
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/identifier" },
+      "description": "Connector categories or specific connectors wired by this pack."
+    },
+    "compliance_packs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/identifier" },
+      "description": "Required Compliance Packs for regulated industries (spec 12 §7)."
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    }
+  }
+}

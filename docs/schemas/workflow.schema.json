@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cooklabs.dev/schemas/v1/workflow.schema.json",
+  "title": "Cook Labs Workflow Definition",
+  "description": "Versioned declarative workflow. See spec 06-workflow-dsl.md.",
+  "type": "object",
+  "required": ["workflow", "version", "trigger", "steps"],
+  "properties": {
+    "workflow": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "version": { "type": "integer", "minimum": 1 },
+    "description": { "type": "string" },
+    "trigger": {
+      "type": "object",
+      "description": "Exactly one of event, schedule, or manual.",
+      "properties": {
+        "event": { "type": "string", "description": "Event type per spec 05." },
+        "schedule": { "type": "string", "description": "Cron expression." },
+        "manual": { "type": "boolean" }
+      },
+      "minProperties": 1,
+      "maxProperties": 1,
+      "additionalProperties": false
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/step" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "step": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "type": {
+          "enum": [
+            "condition", "branch", "loop", "delay", "human_approval",
+            "agent_action", "api_action", "database_action", "notification",
+            "webhook", "transformation", "retry", "compensation", "end"
+          ]
+        },
+        "next": { "type": "string", "description": "Next step id (linear flow)." },
+        "on": { "type": "string", "description": "Boolean expression (condition/branch)." },
+        "when_true": { "type": "string" },
+        "when_false": { "type": "string" },
+        "agent": { "type": "string", "description": "Agent name (agent_action)." },
+        "action": { "type": "string", "description": "Typed tool/connector/module action name." },
+        "map": { "type": "string", "description": "Named transformation (transformation)." },
+        "budget": {
+          "type": "object",
+          "properties": {
+            "max_cost_usd": { "type": "number", "exclusiveMinimum": 0 },
+            "max_tokens": { "type": "integer", "exclusiveMinimum": 0 }
+          },
+          "additionalProperties": false
+        },
+        "output": { "type": "string", "description": "Context variable to store the step result in." },
+        "approver_role": { "type": "string", "description": "Role required (human_approval)." },
+        "duration": { "type": "string", "description": "ISO-8601 duration (delay)." },
+        "max_iterations": { "type": "integer", "minimum": 1, "description": "Required bound (loop)." },
+        "attempts": { "type": "integer", "minimum": 1, "description": "Retry attempts (retry)." },
+        "backoff": { "type": "string", "description": "Backoff policy (retry)." },
+        "compensates": { "type": "string", "description": "Step id this compensation reverses." },
+        "result": { "enum": ["success", "failure", "cancelled"], "description": "Terminal state (end)." },
+        "params": { "type": "object", "description": "Action parameters (validated against the tool schema at runtime)." }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "branch" } }, "required": ["type"] },
+          "then": {
+            "required": ["on", "when_true", "when_false"],
+            "properties": { "on": true, "when_true": true, "when_false": true }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "agent_action" } }, "required": ["type"] },
+          "then": { "required": ["agent"], "properties": { "agent": true } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "loop" } }, "required": ["type"] },
+          "then": { "required": ["max_iterations"], "properties": { "max_iterations": true } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "end" } }, "required": ["type"] },
+          "then": { "required": ["result"], "properties": { "result": true } }
+        }
+      ]
+    }
+  }
+}
