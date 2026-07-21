@@ -35,6 +35,9 @@ built and tested against the spec's contracts.
 | `@cooklabs/agents` | The agent execution pipeline: typed tools, Tool Gateway credential injection, schema→authz→policy→approval gates (specs 03–04) |
 | `@cooklabs/workflows` | Executable engine for the workflow DSL: versioned runs, branch/retry/approval/delay, agent steps via the pipeline (spec 06) |
 | `@cooklabs/knowledge` | Tenant-scoped, permission-aware retrieval with classifications and citations; retrieved content tagged as untrusted data (specs 01 §6, 12) |
+| `@cooklabs/crm` | Customers and leads: dedupe, qualification, conversion; authorized, audited, event-emitting (Phase 3) |
+| `@cooklabs/scheduling` | Appointments with per-resource conflict detection; booked/cancelled events (Phase 3) |
+| `@cooklabs/billing` | Invoices in integer cents with a state machine, overdue sweep, payments, and the usage ledger (Phase 3) |
 
 Postgres core schema with forced row-level security lives in `db/migrations/`; the
 tenant-isolation gate (`scripts/db-isolation-test.mjs`) proves cross-tenant access is
