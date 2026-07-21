@@ -7,8 +7,8 @@ precedents. Read `docs/specifications/v1/00-overview.md` first; ADRs live in `do
 ## Layout
 
 - `packages/*` — foundation packages (TypeScript, npm workspaces): `tenancy`, `permissions`,
-  `audit`, `events`, `auth`, `ai-gateway`, `agents`. Shared code moves only through packages
-  (spec 10 §3).
+  `audit`, `events`, `auth`, `ai-gateway`, `agents`, `workflows`, `knowledge`. Shared code
+  moves only through packages (spec 10 §3).
 - `db/migrations/` — forward-only SQL migrations; every tenant table has forced RLS. The
   isolation gate is `scripts/db-isolation-test.mjs` (needs `DATABASE_URL`; CI runs it against
   a Postgres service).
