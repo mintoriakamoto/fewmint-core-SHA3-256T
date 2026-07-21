@@ -14,3 +14,4 @@ export {
   stampUpdate,
 } from './ownership.js';
 export { TenantScopedRepository, CrossTenantAccessError } from './repository.js';
+export { InMemoryTenantRepository } from './memory.js';

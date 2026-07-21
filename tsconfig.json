@@ -9,6 +9,9 @@
     { "path": "packages/ai-gateway" },
     { "path": "packages/agents" },
     { "path": "packages/workflows" },
-    { "path": "packages/knowledge" }
+    { "path": "packages/knowledge" },
+    { "path": "packages/crm" },
+    { "path": "packages/scheduling" },
+    { "path": "packages/billing" }
   ]
 }

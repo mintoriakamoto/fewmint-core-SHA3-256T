@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../tenancy" },
+    { "path": "../permissions" },
+    { "path": "../audit" },
+    { "path": "../events" }
+  ]
+}
