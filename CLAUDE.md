@@ -8,7 +8,8 @@ precedents. Read `docs/specifications/v1/00-overview.md` first; ADRs live in `do
 
 - `packages/*` — foundation packages (TypeScript, npm workspaces): `tenancy`, `permissions`,
   `audit`, `events`, `auth`, `ai-gateway`, `agents`, `workflows`, `knowledge`, `crm`,
-  `scheduling`, `billing`. Shared code moves only through packages (spec 10 §3).
+  `scheduling`, `billing`, `comms` (blackboard + agent message bus, spec 14), `hercules`.
+  Shared code moves only through packages (spec 10 §3).
 - `industries/*` — Industry Packs. `industries/auto` is the first: pack manifest, workflow and
   agent manifests (schema-validated), auto domain services, and the doc-13 acceptance suite.
 - `apps/api` — HTTP surface (node:http): auth → membership-verified tenant context → validation

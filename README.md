@@ -39,6 +39,7 @@ built and tested against the spec's contracts.
 | `@cooklabs/scheduling` | Appointments with per-resource conflict detection; booked/cancelled events (Phase 3) |
 | `@cooklabs/billing` | Invoices in integer cents with a state machine, overdue sweep, payments, and the usage ledger (Phase 3) |
 | `@cooklabs/hercules` | Software Factory control plane: schema-validated task DAG, permissions ladder L1–L8 (L8 always human-gated), worker adapter seam, evidence-based routing (spec 09) |
+| `@cooklabs/comms` | Agent coordination: append-only blackboard with evidence-required decisions and claim conflict detection, plus the performative message bus with dead-letter queue and human escalation inbox (spec 14) |
 | `@cooklabs/api` (apps/api) | HTTP surface per spec 04 §3: bearer auth, membership-verified tenant context, validation, authorization, audit, structured errors |
 
 Postgres core schema with forced row-level security lives in `db/migrations/`; the
