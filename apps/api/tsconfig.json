@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../../packages/tenancy" },
+    { "path": "../../packages/permissions" },
+    { "path": "../../packages/audit" },
+    { "path": "../../packages/events" },
+    { "path": "../../packages/auth" },
+    { "path": "../../packages/crm" },
+    { "path": "../../packages/scheduling" },
+    { "path": "../../packages/billing" }
+  ]
+}
