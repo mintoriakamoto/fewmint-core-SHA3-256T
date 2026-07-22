@@ -1,3 +1,5 @@
+export { anthropicProvider, type AnthropicProviderConfig } from './providers/anthropic.js';
+export { openAiProvider, type OpenAiProviderConfig } from './providers/openai.js';
 export {
   type ModelProvider,
   type ModelRequest,
