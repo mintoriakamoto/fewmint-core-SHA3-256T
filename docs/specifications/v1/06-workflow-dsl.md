@@ -22,6 +22,7 @@ A workflow is a directed graph of steps drawn from exactly these primitive types
 | `delay` | Wait for duration or until timestamp |
 | `human_approval` | Block until an authorized human approves/rejects |
 | `agent_action` | Invoke an agent ([03](03-agent-protocol.md)) with a defined goal & budget |
+| `agent_conversation` | The named agent asks a peer over the message bus ([14](14-agent-communication.md)); requires `agent` + `params.to`/`params.content` (with `{{var}}` templating); no reply is a visible failure |
 | `api_action` | Invoke a typed tool/connector action ([04](04-tool-contract.md)) |
 | `database_action` | Module-service data operation (never raw SQL) |
 | `notification` | Notify users/channels |

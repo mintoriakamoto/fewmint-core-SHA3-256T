@@ -6,6 +6,7 @@ export {
 } from './definition.js';
 export {
   type AgentInvoker,
+  type ConversationPort,
   type RunStatus,
   type StepRecord,
   type WorkflowRun,

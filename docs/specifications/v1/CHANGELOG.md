@@ -3,6 +3,21 @@
 Versioning rules: see [00 — Overview §8](00-overview.md#8-specification-governance).
 Breaking changes to normative contracts → major; additive → minor; clarifications → patch.
 
+## 1.2.0 — 2026-07-22
+
+Additive: durable coordination and conversational workflows.
+
+- Workflow DSL gains the `agent_conversation` step type (doc 06 §2): the initiating agent asks
+  a peer over the message bus; the step requires `agent` and `params` (`to`, `content` with
+  `{{var}}` templating from run context); a silent peer is a visible failure. Normative schema
+  updated (both copies parity-tested).
+- Doc 14 gains journaling semantics: blackboard entries and bus messages are journaled with
+  dispositions and replayable; per-agent live queues are transient by design; journal records
+  project into `comms.entry.posted` / `comms.message.sent` envelopes.
+- Hercules worker seam ships its first real adapter: the Claude Code CLI worker (ADR-0002) —
+  guardrailed prompt from the context package, machine-readable artifacts required, non-zero
+  exits and malformed output are failures.
+
 ## 1.1.0 — 2026-07-22
 
 Additive: agent communication.

@@ -11,6 +11,7 @@ export interface WorkflowStep {
     | 'delay'
     | 'human_approval'
     | 'agent_action'
+    | 'agent_conversation'
     | 'api_action'
     | 'database_action'
     | 'notification'
