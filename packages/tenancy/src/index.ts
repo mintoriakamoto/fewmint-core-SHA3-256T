@@ -15,3 +15,4 @@ export {
 } from './ownership.js';
 export { TenantScopedRepository, CrossTenantAccessError } from './repository.js';
 export { InMemoryTenantRepository } from './memory.js';
+export { PgTenantRepository, withPgTenantTransaction } from './pg.js';

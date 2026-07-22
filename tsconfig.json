@@ -13,6 +13,8 @@
     { "path": "packages/crm" },
     { "path": "packages/scheduling" },
     { "path": "packages/billing" },
-    { "path": "industries/auto" }
+    { "path": "industries/auto" },
+    { "path": "apps/api" },
+    { "path": "packages/hercules" }
   ]
 }

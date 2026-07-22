@@ -6,12 +6,13 @@
   "type": "module",
   "workspaces": [
     "packages/*",
-    "industries/*"
+    "industries/*",
+    "apps/*"
   ],
   "scripts": {
-    "format": "prettier --write \"packages/**/*.ts\" \"industries/**/*.ts\"",
-    "format:check": "prettier --check \"packages/**/*.ts\" \"industries/**/*.ts\"",
-    "lint": "eslint packages industries",
+    "format": "prettier --write \"packages/**/*.ts\" \"industries/**/*.ts\" \"apps/**/*.ts\"",
+    "format:check": "prettier --check \"packages/**/*.ts\" \"industries/**/*.ts\" \"apps/**/*.ts\"",
+    "lint": "eslint packages industries apps",
     "typecheck": "tsc -b",
     "build": "tsc -b",
     "test": "vitest run"
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
+    "@types/pg": "^8.11.0",
     "ajv": "^8.17.0",
     "ajv-formats": "^3.0.0",
     "eslint": "^9.17.0",
