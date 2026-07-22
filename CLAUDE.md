@@ -11,6 +11,9 @@ precedents. Read `docs/specifications/v1/00-overview.md` first; ADRs live in `do
   `scheduling`, `billing`. Shared code moves only through packages (spec 10 §3).
 - `industries/*` — Industry Packs. `industries/auto` is the first: pack manifest, workflow and
   agent manifests (schema-validated), auto domain services, and the doc-13 acceptance suite.
+- `apps/api` — HTTP surface (node:http): auth → membership-verified tenant context → validation
+  → authorize → audit → structured errors. `packages/hercules` — the Software Factory control
+  plane (task DAG, permissions ladder L1–L8, worker adapters, evidence-based routing).
 - `db/migrations/` — forward-only SQL migrations; every tenant table has forced RLS. The
   isolation gate is `scripts/db-isolation-test.mjs` (needs `DATABASE_URL`; CI runs it against
   a Postgres service).

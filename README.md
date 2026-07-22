@@ -38,6 +38,8 @@ built and tested against the spec's contracts.
 | `@cooklabs/crm` | Customers and leads: dedupe, qualification, conversion; authorized, audited, event-emitting (Phase 3) |
 | `@cooklabs/scheduling` | Appointments with per-resource conflict detection; booked/cancelled events (Phase 3) |
 | `@cooklabs/billing` | Invoices in integer cents with a state machine, overdue sweep, payments, and the usage ledger (Phase 3) |
+| `@cooklabs/hercules` | Software Factory control plane: schema-validated task DAG, permissions ladder L1–L8 (L8 always human-gated), worker adapter seam, evidence-based routing (spec 09) |
+| `@cooklabs/api` (apps/api) | HTTP surface per spec 04 §3: bearer auth, membership-verified tenant context, validation, authorization, audit, structured errors |
 
 Postgres core schema with forced row-level security lives in `db/migrations/`; the
 tenant-isolation gate (`scripts/db-isolation-test.mjs`) proves cross-tenant access is
