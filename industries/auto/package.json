@@ -1,0 +1,25 @@
+{
+  "name": "@cooklabs/industry-auto",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@cooklabs/audit": "*",
+    "@cooklabs/billing": "*",
+    "@cooklabs/events": "*",
+    "@cooklabs/permissions": "*",
+    "@cooklabs/tenancy": "*",
+    "ajv": "^8.17.0"
+  },
+  "devDependencies": {
+    "@cooklabs/agents": "*",
+    "@cooklabs/crm": "*",
+    "@cooklabs/scheduling": "*",
+    "@cooklabs/workflows": "*"
+  }
+}

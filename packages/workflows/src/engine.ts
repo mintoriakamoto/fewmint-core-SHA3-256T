@@ -141,6 +141,7 @@ export class WorkflowEngine {
       throw new Error(`Run ${run.runId} is not awaiting approval (status: ${run.status})`);
     }
     run.approvalRef = approvalRef;
+    run.context['approval_ref'] = approvalRef; // visible to downstream steps
     run.status = 'running';
     const definition = this.definition(run);
     const step = definition.steps.find((s) => s.id === run.currentStepId);

@@ -5,12 +5,13 @@
   "description": "Cook Labs — AI Business Operating System monorepo",
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "industries/*"
   ],
   "scripts": {
-    "format": "prettier --write \"packages/**/*.ts\"",
-    "format:check": "prettier --check \"packages/**/*.ts\"",
-    "lint": "eslint packages",
+    "format": "prettier --write \"packages/**/*.ts\" \"industries/**/*.ts\"",
+    "format:check": "prettier --check \"packages/**/*.ts\" \"industries/**/*.ts\"",
+    "lint": "eslint packages industries",
     "typecheck": "tsc -b",
     "build": "tsc -b",
     "test": "vitest run"

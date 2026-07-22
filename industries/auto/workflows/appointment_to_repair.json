@@ -1,0 +1,20 @@
+{
+  "workflow": "appointment_to_repair",
+  "version": 1,
+  "description": "When an appointment is booked, open a repair order and notify the shop.",
+  "trigger": { "event": "appointment.booked" },
+  "steps": [
+    {
+      "id": "create_ro",
+      "type": "api_action",
+      "action": "auto.create_repair_order",
+      "output": "repair_order"
+    },
+    {
+      "id": "notify_shop",
+      "type": "notification",
+      "params": { "message": "Repair order opened for booked appointment" }
+    },
+    { "id": "done", "type": "end", "result": "success" }
+  ]
+}
