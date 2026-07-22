@@ -1,5 +1,6 @@
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import addFormatsModule from 'ajv-formats';
+import type { Blackboard } from '@cooklabs/comms';
 import taskSchema from './hercules-task.schema.json' with { type: 'json' };
 import { assertCapability } from './ladder.js';
 import type { ContextPackage, TaskArtifacts, Worker } from './workers.js';
@@ -70,6 +71,10 @@ const validateTask = ajv.compile(taskSchema);
  */
 export class ControlPlane {
   private readonly tasks = new Map<string, HerculesTask>();
+
+  /** When a blackboard is attached, every task gets a board keyed by task_id
+   *  and the dispatch/review/merge protocol leaves a debate-ready trail. */
+  constructor(private readonly blackboard?: Blackboard) {}
 
   addTask(input: unknown): HerculesTask {
     if (!validateTask(input)) {
@@ -142,19 +147,46 @@ export class ControlPlane {
     assertCapability(worker, 3);
     assertCapability(worker, 4);
     task.status = 'in_progress';
+    const author = { id: worker.id, type: 'worker' as const };
+    this.blackboard?.post(taskId, author, 'status', 'started build');
     const artifacts = await worker.run(task, this.contextPackage(taskId));
     task.artifacts.push(...artifacts.commits, artifacts.testReport);
+    if (this.blackboard) {
+      for (const commit of artifacts.commits) {
+        this.blackboard.post(taskId, author, 'artifact', `commit ${commit}`);
+      }
+      this.blackboard.post(taskId, author, 'artifact', artifacts.testReport);
+    }
     task.status = 'in_review';
     return artifacts;
   }
 
-  /** Review + gates verdict from a reviewer that must differ from the owner. */
-  review(taskId: string, reviewerId: string, verdict: 'approve' | 'reject'): HerculesTask {
+  /**
+   * Review + gates verdict from a reviewer that must differ from the owner.
+   * With a blackboard attached, the verdict is recorded as a `decision` entry
+   * and MUST cite evidence (finding/artifact entries) — claims alone never
+   * decide anything (spec 09 §5, 14 §2).
+   */
+  review(
+    taskId: string,
+    reviewerId: string,
+    verdict: 'approve' | 'reject',
+    evidenceRefs?: readonly string[],
+  ): HerculesTask {
     const task = this.get(taskId);
     if (task.status !== 'in_review') throw new Error(`task ${taskId} is not in review`);
     if (reviewerId === task.owner) {
       throw new Error(`reviewer must differ from owner ${task.owner} (spec 09 §5)`);
     }
+    this.blackboard?.post(
+      taskId,
+      { id: reviewerId, type: 'worker' },
+      'decision',
+      `review:${verdict}`,
+      {
+        refs: evidenceRefs ?? [],
+      },
+    );
     task.status = verdict === 'approve' ? 'gates' : 'rejected';
     return task;
   }
@@ -166,6 +198,7 @@ export class ControlPlane {
     assertCapability(merger, 5);
     assertCapability(merger, 6);
     task.status = 'merged';
+    this.blackboard?.post(taskId, { id: merger.id, type: 'system' }, 'status', 'merged');
     return task;
   }
 

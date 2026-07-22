@@ -9,6 +9,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@cooklabs/comms": "*",
     "ajv": "^8.17.0"
   }
 }
