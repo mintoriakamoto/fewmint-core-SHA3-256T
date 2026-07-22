@@ -1,0 +1,12 @@
+{
+  "industry": "auto_repair",
+  "version": "1.0.0",
+  "display_name": "Cook Labs Auto",
+  "description": "Auto repair shop operating system: repair orders, estimates, scheduling, billing, and AI service advisors.",
+  "modules": ["crm", "scheduling", "estimates", "inventory", "invoicing"],
+  "entities": ["vehicle", "repair_order", "inspection", "technician", "part"],
+  "agents": ["service_advisor", "diagnostic_assistant", "parts_agent", "retention_agent"],
+  "workflows": ["appointment_to_repair", "estimate_approval", "maintenance_followup"],
+  "dashboards": ["daily_sales", "labor_utilization", "average_ticket"],
+  "integrations": ["accounting", "payments", "communications"]
+}

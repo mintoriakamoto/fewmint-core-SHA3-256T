@@ -12,6 +12,7 @@
     { "path": "packages/knowledge" },
     { "path": "packages/crm" },
     { "path": "packages/scheduling" },
-    { "path": "packages/billing" }
+    { "path": "packages/billing" },
+    { "path": "industries/auto" }
   ]
 }

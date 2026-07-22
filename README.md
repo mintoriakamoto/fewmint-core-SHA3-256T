@@ -43,6 +43,12 @@ Postgres core schema with forced row-level security lives in `db/migrations/`; t
 tenant-isolation gate (`scripts/db-isolation-test.mjs`) proves cross-tenant access is
 impossible and runs in CI against a real Postgres.
 
+**First Industry Pack:** `industries/auto` — Cook Labs Auto. Schema-validated pack, workflow,
+and agent manifests; vehicle/repair-order services with the doc-13 state machine; and an
+executable acceptance suite that walks the customer journey end to end (appointment →
+repair order → inspection → estimate → workflow-gated approval → work → invoice → payment →
+AI Service Advisor follow-up through the real agent pipeline).
+
 Commands: `npm test` · `npm run lint` · `npm run typecheck` · `npm run build` ·
 `node scripts/validate-schemas.mjs` (schema gate). CI runs the spec 11 §1 gate sequence in
 [.github/workflows/ci.yml](.github/workflows/ci.yml).

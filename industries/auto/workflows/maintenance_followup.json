@@ -1,0 +1,17 @@
+{
+  "workflow": "maintenance_followup",
+  "version": 1,
+  "description": "90 days after a completed job, the Service Advisor reaches out to book maintenance.",
+  "trigger": { "event": "job.completed" },
+  "steps": [
+    { "id": "wait_90_days", "type": "delay", "duration": "P90D" },
+    {
+      "id": "advisor_outreach",
+      "type": "agent_action",
+      "agent": "service_advisor",
+      "budget": { "max_cost_usd": 1 },
+      "output": "followup_result"
+    },
+    { "id": "done", "type": "end", "result": "success" }
+  ]
+}

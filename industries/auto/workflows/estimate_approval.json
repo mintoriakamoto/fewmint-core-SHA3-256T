@@ -1,0 +1,16 @@
+{
+  "workflow": "estimate_approval",
+  "version": 1,
+  "description": "Customer approval gates the repair: the run parks until an approval reference exists.",
+  "trigger": { "event": "estimate.created" },
+  "steps": [
+    { "id": "customer_approval", "type": "human_approval", "approver_role": "customer" },
+    {
+      "id": "mark_approved",
+      "type": "api_action",
+      "action": "auto.approve_estimate",
+      "output": "approved_order"
+    },
+    { "id": "done", "type": "end", "result": "success" }
+  ]
+}

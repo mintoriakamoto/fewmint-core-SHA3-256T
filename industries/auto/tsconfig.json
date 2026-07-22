@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "resolveJsonModule": true
+  },
+  "include": ["src", "src/**/*.json"],
+  "references": [
+    { "path": "../../packages/tenancy" },
+    { "path": "../../packages/permissions" },
+    { "path": "../../packages/audit" },
+    { "path": "../../packages/events" },
+    { "path": "../../packages/billing" }
+  ]
+}

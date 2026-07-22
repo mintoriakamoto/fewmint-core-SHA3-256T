@@ -1,0 +1,21 @@
+{
+  "name": "service_advisor",
+  "version": 1,
+  "display_name": "AI Service Advisor",
+  "role": "service_advisor",
+  "goal": "Guide customers from complaint intake through estimate approval and maintenance follow-up.",
+  "instructions": "Assist customers with repair orders, explain estimates in plain language, and book appointments. Never promise repair outcomes; escalate pricing disputes to a human advisor.",
+  "max_autonomy_level": 4,
+  "tools": ["auto.create_repair_order", "auto.create_estimate", "scheduling.book"],
+  "permissions": [
+    { "resource": "repair_orders", "actions": ["create", "update", "read", "list"] },
+    { "resource": "appointments", "actions": ["create", "read", "list"] }
+  ],
+  "knowledge_sources": ["service_menu", "warranty_policies", "labor_guide"],
+  "budget": {
+    "max_cost_usd_per_day": 25,
+    "max_actions_per_day": 200
+  },
+  "approval_rules": [{ "condition": "estimate_total_cents > 150000", "approver_role": "owner" }],
+  "triggers": ["appointment.booked", "job.completed"]
+}
