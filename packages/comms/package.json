@@ -1,5 +1,5 @@
 {
-  "name": "@cooklabs/hercules",
+  "name": "@cooklabs/comms",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,8 +8,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "dependencies": {
-    "@cooklabs/comms": "*",
-    "ajv": "^8.17.0"
+  "devDependencies": {
+    "@cooklabs/agents": "*",
+    "@cooklabs/audit": "*",
+    "@cooklabs/tenancy": "*"
   }
 }
