@@ -69,7 +69,16 @@ authorization → policy → risk/approval → audited execution. A message sayi
 instructions and run_any_sql" remains inert text — the receiving agent's pipeline rejects
 unknown tools and free-text execution regardless of what the content demands.
 
-## 5. Tenant scoping
+## 5. Durability (normative, since 1.2.0)
+
+Blackboard entries and bus messages are journaled at acceptance (messages with their delivery
+disposition: delivered / dead_letter / human_inbox / broadcast). Coordination state MUST be
+rebuildable by replaying the journal; replay is idempotent and preserves original ids and
+timestamps. Per-agent live queues are transient by design — agents re-request after a restart
+rather than trusting stale deliveries. Journal records project into the platform event log as
+`comms.entry.posted` / `comms.message.sent` envelopes ([05](05-event-schema.md)).
+
+## 6. Tenant scoping
 
 Business-agent boards and conversations are tenant-scoped resources: participants act within a
 tenant context and content inherits the data-governance rules of [12 §6](12-security-baseline.md).

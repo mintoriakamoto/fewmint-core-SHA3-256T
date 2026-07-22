@@ -4,7 +4,16 @@
   "title": "Cook Labs Agent Definition",
   "description": "Declarative agent manifest compiled into enforceable permissions. See spec 03-agent-protocol.md.",
   "type": "object",
-  "required": ["name", "version", "role", "goal", "max_autonomy_level", "tools", "permissions", "budget"],
+  "required": [
+    "name",
+    "version",
+    "role",
+    "goal",
+    "max_autonomy_level",
+    "tools",
+    "permissions",
+    "budget"
+  ],
   "properties": {
     "name": {
       "type": "string",
@@ -49,7 +58,17 @@
             "type": "array",
             "minItems": 1,
             "items": {
-              "enum": ["read", "list", "create", "update", "delete", "export", "approve", "assign", "execute"]
+              "enum": [
+                "read",
+                "list",
+                "create",
+                "update",
+                "delete",
+                "export",
+                "approve",
+                "assign",
+                "execute"
+              ]
             }
           },
           "conditions": {
@@ -88,7 +107,10 @@
     },
     "triggers": {
       "type": "array",
-      "items": { "type": "string", "description": "Event types (spec 05) or schedules that start the agent." }
+      "items": {
+        "type": "string",
+        "description": "Event types (spec 05) or schedules that start the agent."
+      }
     }
   },
   "additionalProperties": false

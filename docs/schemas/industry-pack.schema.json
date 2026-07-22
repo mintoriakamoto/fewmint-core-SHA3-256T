@@ -4,7 +4,16 @@
   "title": "Cook Labs Industry Pack Manifest",
   "description": "Declarative definition of a vertical product. See spec 07-industry-pack-schema.md.",
   "type": "object",
-  "required": ["industry", "version", "modules", "entities", "agents", "workflows", "dashboards", "integrations"],
+  "required": [
+    "industry",
+    "version",
+    "modules",
+    "entities",
+    "agents",
+    "workflows",
+    "dashboards",
+    "integrations"
+  ],
   "properties": {
     "industry": {
       "type": "string",

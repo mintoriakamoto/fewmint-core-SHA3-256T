@@ -55,6 +55,33 @@ export class MessageBus {
   private readonly deadLetterQueue: AgentMessage[] = [];
   private readonly humanInboxQueue: AgentMessage[] = [];
 
+  constructor(
+    private readonly options?: {
+      /** Durable sink: every accepted message is journaled with its disposition. */
+      readonly journal?: (record: {
+        kind: 'message';
+        message: AgentMessage;
+        disposition: 'delivered' | 'dead_letter' | 'human_inbox' | 'broadcast';
+      }) => void;
+    },
+  ) {}
+
+  /**
+   * Replay path: reinstates a journaled message into durable state — the
+   * idempotency set always, plus the dead-letter queue and human inbox by
+   * recorded disposition. Live per-agent queues are transient by design:
+   * agents re-request after a restart. Idempotent.
+   */
+  restore(
+    message: AgentMessage,
+    disposition: 'delivered' | 'dead_letter' | 'human_inbox' | 'broadcast',
+  ): void {
+    if (this.seen.has(message.id)) return;
+    this.seen.set(message.id, message);
+    if (disposition === 'dead_letter') this.deadLetterQueue.push(message);
+    if (disposition === 'human_inbox') this.humanInboxQueue.push(message);
+  }
+
   register(agentId: string, handler?: MessageHandler): void {
     this.handlers.set(agentId, handler);
     if (!this.queues.has(agentId)) this.queues.set(agentId, []);
@@ -92,9 +119,11 @@ export class MessageBus {
 
     if (message.performative === 'escalate') {
       this.humanInboxQueue.push(message);
+      this.options?.journal?.({ kind: 'message', message, disposition: 'human_inbox' });
       return message;
     }
     if (message.topic !== undefined) {
+      this.options?.journal?.({ kind: 'message', message, disposition: 'broadcast' });
       for (const subscriber of this.topics.get(message.topic) ?? []) {
         await this.deliver(subscriber, message);
       }
@@ -102,8 +131,10 @@ export class MessageBus {
     }
     if (!this.handlers.has(message.to!)) {
       this.deadLetterQueue.push(message);
+      this.options?.journal?.({ kind: 'message', message, disposition: 'dead_letter' });
       return message;
     }
+    this.options?.journal?.({ kind: 'message', message, disposition: 'delivered' });
     await this.deliver(message.to!, message);
     return message;
   }

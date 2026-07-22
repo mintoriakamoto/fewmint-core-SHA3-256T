@@ -4,16 +4,33 @@
   "title": "Hercules Task",
   "description": "A Software Factory task record and its worker context package. See spec 09-hercules-protocol.md.",
   "type": "object",
-  "required": ["task_id", "title", "specification", "owner", "branch", "allowed_paths", "acceptance_criteria", "status"],
+  "required": [
+    "task_id",
+    "title",
+    "specification",
+    "owner",
+    "branch",
+    "allowed_paths",
+    "acceptance_criteria",
+    "status"
+  ],
   "properties": {
     "task_id": {
       "type": "string",
       "pattern": "^[A-Z][A-Z0-9]*-\\d+$",
       "description": "e.g. 'ARCH-001', 'DB-001', 'REVIEW-001'."
     },
-    "epic_id": { "type": "string", "pattern": "^[A-Z][A-Z0-9-]*-\\d+$", "description": "e.g. 'AUTO-SAAS-001'." },
+    "epic_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9-]*-\\d+$",
+      "description": "e.g. 'AUTO-SAAS-001'."
+    },
     "title": { "type": "string", "minLength": 1 },
-    "specification": { "type": "string", "minLength": 1, "description": "What to build and why; the normative task spec." },
+    "specification": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What to build and why; the normative task spec."
+    },
     "owner": {
       "type": "string",
       "description": "Assigned worker id, e.g. 'claude_code', 'codex', 'hermes', 'mimocode', 'grok_build', 'local'."
@@ -72,17 +89,33 @@
     "deadline": { "type": "string", "format": "date-time" },
     "status": {
       "enum": [
-        "draft", "ready", "assigned", "in_progress", "self_test",
-        "in_review", "gates", "evaluation", "pr_open", "merged",
-        "rejected", "cancelled"
+        "draft",
+        "ready",
+        "assigned",
+        "in_progress",
+        "self_test",
+        "in_review",
+        "gates",
+        "evaluation",
+        "pr_open",
+        "merged",
+        "rejected",
+        "cancelled"
       ]
     },
     "review": {
       "type": "object",
       "description": "Cross-model verification plan (spec 09 §5).",
       "properties": {
-        "reviewers": { "type": "array", "items": { "type": "string" }, "description": "Must differ from owner for critical tasks." },
-        "competitive": { "type": "boolean", "description": "True when two workers solve independently." }
+        "reviewers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Must differ from owner for critical tasks."
+        },
+        "competitive": {
+          "type": "boolean",
+          "description": "True when two workers solve independently."
+        }
       },
       "additionalProperties": false
     },

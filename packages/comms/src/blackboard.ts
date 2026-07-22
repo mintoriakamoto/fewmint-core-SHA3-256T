@@ -55,6 +55,34 @@ export class Blackboard {
   private readonly claims = new Map<string, BlackboardEntry>();
   private readonly subscribers = new Map<string, Set<(entry: BlackboardEntry) => void>>();
 
+  constructor(
+    private readonly options?: {
+      /** Durable sink: every accepted entry is journaled (spec 14). */
+      readonly journal?: (record: { kind: 'entry'; entry: BlackboardEntry }) => void;
+    },
+  ) {}
+
+  /**
+   * Replay path: reinstates a journaled entry verbatim — original id and
+   * timestamps preserved, no re-journaling, no subscriber notification.
+   * Live claim state is derived from claim/release entries. Idempotent.
+   */
+  restore(entry: BlackboardEntry): void {
+    const entries = this.byBoard.get(entry.board) ?? [];
+    if (entries.some((e) => e.id === entry.id)) return;
+    entries.push(entry);
+    this.byBoard.set(entry.board, entries);
+    if (entry.kind === 'claim') {
+      this.claims.set(`${entry.board}:${entry.content}`, entry);
+    }
+    if (entry.kind === 'status' && entry.content.startsWith('released claim on ')) {
+      const resource = entry.content.slice('released claim on '.length);
+      const key = `${entry.board}:${resource}`;
+      const held = this.claims.get(key);
+      if (held && entry.refs.includes(held.id)) this.claims.delete(key);
+    }
+  }
+
   post(
     board: string,
     author: Author,
@@ -95,6 +123,7 @@ export class Blackboard {
     });
     entries.push(entry);
     this.byBoard.set(board, entries);
+    this.options?.journal?.({ kind: 'entry', entry });
     for (const handler of this.subscribers.get(board) ?? []) handler(entry);
     return entry;
   }

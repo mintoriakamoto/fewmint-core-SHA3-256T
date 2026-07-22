@@ -97,10 +97,24 @@ export function parseIsoDuration(duration: string): number {
   return ms;
 }
 
+/**
+ * Structural port to the agent message bus (spec 14) — satisfied by
+ * @cooklabs/comms MessageBus without a hard dependency.
+ */
+export interface ConversationPort {
+  request(
+    from: { readonly id: string; readonly type: 'agent' },
+    to: string,
+    content: string,
+    taskRef?: string,
+  ): Promise<{ readonly performative: string; readonly content: string } | undefined>;
+}
+
 export interface EngineDeps {
   readonly transformations?: Readonly<Record<string, Transformation>>;
   readonly actions?: Readonly<Record<string, ActionHandler>>;
   readonly agents?: AgentInvoker;
+  readonly bus?: ConversationPort;
   readonly notify?: (message: string, context: Readonly<Record<string, unknown>>) => void;
   readonly now?: () => number;
 }
@@ -297,6 +311,32 @@ export class WorkflowEngine {
           throw new Error(`agent ${step.agent} outcome ${outcome.status}: ${outcome.reason ?? ''}`);
         }
         if (step.output !== undefined) run.context[step.output] = outcome.result;
+        return;
+      }
+      case 'agent_conversation': {
+        // spec 06/14: the initiating agent asks a peer over the bus; the
+        // templated content may reference run context via {{var}}.
+        if (!this.deps.bus) throw new Error('no conversation bus configured');
+        const to = String(step.params?.['to'] ?? '');
+        const template = String(step.params?.['content'] ?? '');
+        if (to === '' || template === '') {
+          throw new Error('agent_conversation requires params.to and params.content');
+        }
+        const content = template.replace(/\{\{(\w+)\}\}/g, (_, name: string) =>
+          String(run.context[name] ?? ''),
+        );
+        const reply = await this.deps.bus.request(
+          { id: step.agent!, type: 'agent' },
+          to,
+          content,
+          run.runId,
+        );
+        if (reply === undefined) {
+          throw new Error(`agent_conversation: no reply from ${to}`); // visible failure
+        }
+        if (step.output !== undefined) {
+          run.context[step.output] = { performative: reply.performative, content: reply.content };
+        }
         return;
       }
       case 'notification': {

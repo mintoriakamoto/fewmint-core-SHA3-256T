@@ -15,6 +15,7 @@
   "devDependencies": {
     "@cooklabs/agents": "*",
     "@cooklabs/audit": "*",
+    "@cooklabs/comms": "*",
     "@cooklabs/events": "*",
     "@cooklabs/permissions": "*"
   }
