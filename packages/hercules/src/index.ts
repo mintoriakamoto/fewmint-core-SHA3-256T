@@ -14,6 +14,12 @@ export {
 } from './control-plane.js';
 export { type Worker, type TaskArtifacts, type ContextPackage } from './workers.js';
 export {
+  claudeCodeWorker,
+  type ClaudeCodeWorkerOptions,
+  type ExecFn,
+  type ExecResult,
+} from './adapters/claude-code.js';
+export {
   ScoreBoard,
   MissingEvidenceError,
   type Lesson,
