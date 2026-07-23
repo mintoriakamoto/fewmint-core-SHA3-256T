@@ -15,6 +15,9 @@ precedents. Read `docs/specifications/v1/00-overview.md` first; ADRs live in `do
 - `apps/api` — HTTP surface (node:http): auth → membership-verified tenant context → validation
   → authorize → audit → structured errors. `packages/hercules` — the Software Factory control
   plane (task DAG, permissions ladder L1–L8, worker adapters, evidence-based routing).
+- `apps/factory` — the factory runner: `createFactory({repoRoot, worktreeRoot, workers})` gives
+  real git worktrees per task, scoreboard-driven worker selection, journaled task boards, and
+  merge-to-main only after an evidence-cited review passes.
 - `db/migrations/` — forward-only SQL migrations; every tenant table has forced RLS. The
   isolation gate is `scripts/db-isolation-test.mjs` (needs `DATABASE_URL`; CI runs it against
   a Postgres service).

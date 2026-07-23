@@ -41,6 +41,7 @@ built and tested against the spec's contracts.
 | `@cooklabs/hercules` | Software Factory control plane: schema-validated task DAG, permissions ladder L1–L8 (L8 always human-gated), worker adapter seam, evidence-based routing (spec 09) |
 | `@cooklabs/comms` | Agent coordination: append-only blackboard with evidence-required decisions and claim conflict detection, plus the performative message bus with dead-letter queue and human escalation inbox (spec 14) |
 | `@cooklabs/api` (apps/api) | HTTP surface per spec 04 §3: bearer auth, membership-verified tenant context, validation, authorization, audit, structured errors |
+| `@cooklabs/factory` (apps/factory) | The Software Factory runner: real git worktree per task, evidence-based worker selection, journaled boards, git merge only after gated review (spec 09 as a process) |
 
 Postgres core schema with forced row-level security lives in `db/migrations/`; the
 tenant-isolation gate (`scripts/db-isolation-test.mjs`) proves cross-tenant access is
