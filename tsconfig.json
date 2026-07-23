@@ -15,6 +15,7 @@
     { "path": "packages/billing" },
     { "path": "industries/auto" },
     { "path": "apps/api" },
+    { "path": "apps/factory" },
     { "path": "packages/hercules" },
     { "path": "packages/comms" }
   ]

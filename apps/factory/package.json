@@ -1,0 +1,15 @@
+{
+  "name": "@cooklabs/factory",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/runner.ts",
+  "types": "src/runner.ts",
+  "exports": {
+    ".": "./src/runner.ts"
+  },
+  "dependencies": {
+    "@cooklabs/comms": "*",
+    "@cooklabs/hercules": "*"
+  }
+}
